@@ -1,0 +1,50 @@
+[
+  {
+    "method": "inverted_index",
+    "threshold": 0.0877,
+    "runtime_ms": 0.455,
+    "precision": 0.625,
+    "recall": 1.0,
+    "f1": 0.7692,
+    "tp": 5,
+    "fp": 3,
+    "tn": 20,
+    "fn": 0
+  },
+  {
+    "method": "ngram_jaccard",
+    "threshold": 0.0208,
+    "runtime_ms": 0.378,
+    "precision": 1.0,
+    "recall": 0.6,
+    "f1": 0.75,
+    "tp": 3,
+    "fp": 0,
+    "tn": 23,
+    "fn": 2
+  },
+  {
+    "method": "suffix_exact",
+    "threshold": 0.095,
+    "runtime_ms": 62.358,
+    "precision": 1.0,
+    "recall": 0.6,
+    "f1": 0.75,
+    "tp": 3,
+    "fp": 0,
+    "tn": 23,
+    "fn": 2
+  },
+  {
+    "method": "minhash_lsh",
+    "threshold": 0.3125,
+    "runtime_ms": 112.694,
+    "precision": 1.0,
+    "recall": 0.6,
+    "f1": 0.75,
+    "tp": 3,
+    "fp": 0,
+    "tn": 23,
+    "fn": 2
+  }
+]

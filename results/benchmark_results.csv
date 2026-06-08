@@ -1,0 +1,5 @@
+method,threshold,runtime_ms,precision,recall,f1,tp,fp,tn,fn
+inverted_index,0.0877,0.455,0.625,1.0,0.7692,5,3,20,0
+ngram_jaccard,0.0208,0.378,1.0,0.6,0.75,3,0,23,2
+suffix_exact,0.095,62.358,1.0,0.6,0.75,3,0,23,2
+minhash_lsh,0.3125,112.694,1.0,0.6,0.75,3,0,23,2

@@ -1,0 +1,58 @@
+{
+  "pairs": [
+    {
+      "left_id": "full_duplicate_1",
+      "right_id": "full_duplicate_2",
+      "expected_match": true,
+      "scenario": "full_duplicate"
+    },
+    {
+      "left_id": "small_insertion_1",
+      "right_id": "small_insertion_2",
+      "expected_match": true,
+      "scenario": "small_insertion"
+    },
+    {
+      "left_id": "long_fragment_1",
+      "right_id": "long_fragment_2",
+      "expected_match": true,
+      "scenario": "one_common_long_paragraph"
+    },
+    {
+      "left_id": "paraphrase_1",
+      "right_id": "paraphrase_2",
+      "expected_match": false,
+      "scenario": "paraphrase"
+    },
+    {
+      "left_id": "different_1",
+      "right_id": "different_2",
+      "expected_match": false,
+      "scenario": "different_texts"
+    },
+    {
+  "left_id": "reordered_paragraphs_1",
+  "right_id": "reordered_paragraphs_2",
+  "expected_match": true,
+  "scenario": "reordered_paragraphs"
+},
+{
+  "left_id": "same_terms_different_meaning_1",
+  "right_id": "same_terms_different_meaning_2",
+  "expected_match": false,
+  "scenario": "same_terms_different_meaning"
+},
+{
+  "left_id": "document_subset_1",
+  "right_id": "document_subset_2",
+  "expected_match": true,
+  "scenario": "document_subset"
+},
+{
+  "left_id": "distributed_editing_1",
+  "right_id": "distributed_editing_2",
+  "expected_match": true,
+  "scenario": "distributed_editing"
+}
+  ]
+}

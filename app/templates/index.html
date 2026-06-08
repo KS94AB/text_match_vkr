@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Match Research Service</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero card">
+      <div>
+        <p class="eyebrow">Исследовательский веб-сервис</p>
+        <h1>Сравнение коллекции документов по нескольким методам</h1>
+        <p class="lead">Загрузи несколько файлов <strong>.docx</strong> или <strong>.txt</strong>, выбери метод кнопкой и запусти анализ без ручного ввода JSON.</p>
+      </div>
+      <div class="hero-badges">
+        <span>Python + FastAPI</span>
+        <span>DOCX collection</span>
+        <span>REST API + UI</span>
+      </div>
+    </section>
+
+    <section class="grid-two">
+      <section class="card">
+        <div class="section-head">
+          <h2>1. Загрузка коллекции</h2>
+          <p>Поддерживается множественный выбор файлов.</p>
+        </div>
+        <form id="analysis-form">
+          <label class="dropzone" for="file-input">
+            <input id="file-input" name="files" type="file" multiple accept=".docx,.txt">
+            <span class="dropzone-title">Нажми или перетащи сюда коллекцию документов</span>
+            <span class="dropzone-subtitle">Рекомендуется не менее двух файлов для попарного сравнения.</span>
+          </label>
+
+          <div id="selected-files" class="file-list empty">Файлы ещё не выбраны.</div>
+
+          <label class="dropzone secondary-dropzone" for="ground-truth-input">
+            <input id="ground-truth-input" name="ground_truth_file" type="file" accept=".json,application/json">
+            <span class="dropzone-title">Эталонная разметка (необязательно)</span>
+            <span class="dropzone-subtitle">Загрузите JSON с ожидаемыми результатами пар, чтобы включить экспериментальный режим.</span>
+          </label>
+          <div id="selected-ground-truth" class="file-list empty">Эталонная разметка не выбрана. Сервис работает в обычном режиме.</div>
+
+          <div class="inline-controls">
+            <label>
+              <span>Порог совпадения</span>
+              <input id="threshold" name="threshold" type="number" min="0" max="1" step="0.05" value="0.5">
+            </label>
+            <label>
+              <span>Размер шингла</span>
+              <input id="shingle_size" name="shingle_size" type="number" min="2" max="12" step="1" value="5">
+            </label>
+            <label>
+              <span>Размер N-граммы</span>
+              <input id="ngram_size" name="ngram_size" type="number" min="2" max="7" step="1" value="3">
+            </label>
+            <label>
+              <span>Top-K</span>
+              <input id="top_k" name="top_k" type="number" min="1" max="50" step="1" value="10">
+            </label>
+          </div>
+
+          <label>
+            <span>Дополнительный поисковый запрос (необязательно)</span>
+            <textarea id="query_text" name="query_text" rows="4" placeholder="Вставь текст, по которому нужно найти наиболее похожие документы в коллекции."></textarea>
+          </label>
+
+          <input id="method" name="method" type="hidden" value="{{ default_method }}">
+
+          <div class="actions-row">
+            <button id="analyze-button" type="submit" class="primary-button">Запустить анализ</button>
+            <button id="clear-button" type="button" class="ghost-button">Очистить форму</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>2. Выбор метода</h2>
+          <p>Метод переключается кнопкой и не требует правки кода.</p>
+        </div>
+        <div id="method-grid" class="method-grid">
+          {% for method_key, method in method_details.items() %}
+            <button
+              type="button"
+              class="method-card {% if method_key == default_method %}active{% endif %}"
+              data-method="{{ method_key }}"
+            >
+              <span class="method-name">{{ method.title }}</span>
+              <span class="method-key">{{ method_key }}</span>
+              <span class="method-description">{{ method.description }}</span>
+            </button>
+          {% endfor %}
+        </div>
+      </section>
+    </section>
+
+    <section class="card results-card">
+      <div class="section-head">
+        <h2>3. Результаты анализа</h2>
+        <p>После запуска здесь появятся итоговые метрики и таблица совпадений.</p>
+      </div>
+      <div id="status-banner" class="status-banner idle">Ожидание запуска анализа.</div>
+      <div id="results-root" class="results-root empty-state">
+        Загрузите коллекцию и нажмите «Запустить анализ».
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.__METHOD_DETAILS__ = {{ method_details | tojson }};
+    window.__DEFAULT_METHOD__ = {{ default_method | tojson }};
+  </script>
+  <script src="{{ url_for('static', path='app.js') }}"></script>
+</body>
+</html>
