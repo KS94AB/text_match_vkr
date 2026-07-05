@@ -28,3 +28,11 @@ python run.py
 - `GET /method-details`
 - `POST /analyze` — JSON API
 - `POST /analyze-upload` — анализ загруженной коллекции файлов
+
+## Запуск через Docker
+```bash
+docker compose up --build
+docker compose up -d --build
+docker compose down
+docker compose logs -f
+```
