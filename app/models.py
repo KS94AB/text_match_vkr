@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Literal, Optional
 from pydantic import AliasChoices, BaseModel, Field
 
 
-MethodName = Literal["suffix_exact", "minhash_lsh", "inverted_index", "ngram_jaccard"]
+MethodName = Literal["suffix_exact", "minhash_lsh", "inverted_index", "ngram_jaccard", "tfidf_cosine"]
 
 
 class DocumentIn(BaseModel):

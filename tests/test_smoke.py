@@ -96,3 +96,73 @@ def test_upload_analysis_accepts_ground_truth_json():
     payload = response.json()
     assert payload['analysis']['experiment_metrics']['tp'] == 1
     assert payload['analysis']['pairwise'][0]['metadata']['experiment_outcome'] == 'TP'
+
+
+def test_tfidf_cosine_identical_texts_match():
+    response = client.post(
+        '/analyze',
+        json={
+            'documents': [
+                {'id': 'doc1', 'text': 'alpha beta gamma alpha'},
+                {'id': 'doc2', 'text': 'alpha beta gamma alpha'},
+            ],
+            'method': 'tfidf_cosine',
+            'threshold': 0.9,
+        },
+    )
+    assert response.status_code == 200
+    result = response.json()['pairwise'][0]
+    assert result['score'] >= 0.99
+    assert result['verdict'] == 'match'
+    assert result['metadata']['similarity_metric'] == 'cosine_similarity'
+
+
+def test_tfidf_cosine_different_texts_no_match():
+    response = client.post(
+        '/analyze',
+        json={
+            'documents': [
+                {'id': 'doc1', 'text': 'alpha beta gamma'},
+                {'id': 'doc2', 'text': 'delta epsilon zeta'},
+            ],
+            'method': 'tfidf_cosine',
+            'threshold': 0.5,
+        },
+    )
+    assert response.status_code == 200
+    result = response.json()['pairwise'][0]
+    assert result['score'] <= 0.1
+    assert result['verdict'] == 'no_match'
+
+
+def test_tfidf_cosine_works_through_common_selector():
+    response = client.post(
+        '/analyze',
+        json={
+            'documents': [
+                {'id': 'doc1', 'text': 'shared words here'},
+                {'id': 'doc2', 'text': 'shared words here'},
+            ],
+            'method': 'tfidf_cosine',
+            'threshold': 0.9,
+        },
+    )
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload['method'] == 'tfidf_cosine'
+    assert payload['pairwise'][0]['verdict'] == 'match'
+
+
+def test_tfidf_alias_is_not_public_api():
+    response = client.post(
+        '/analyze',
+        json={
+            'documents': [
+                {'id': 'doc1', 'text': 'shared words here'},
+                {'id': 'doc2', 'text': 'shared words here'},
+            ],
+            'method': 'tfidf',
+            'threshold': 0.9,
+        },
+    )
+    assert response.status_code == 422

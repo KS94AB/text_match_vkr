@@ -94,6 +94,16 @@ def _build_method_specific_metrics(method: str, pairwise: list[Any]) -> dict[str
             "average_union_ngrams": _average(union_ngrams),
         }
 
+    if method == "tfidf_cosine":
+        vocabulary_sizes = [
+            float(metadata.get("vocabulary_size", 0))
+            for metadata in metadata_items
+            if "vocabulary_size" in metadata
+        ]
+        return {
+            "average_vocabulary_size": _average(vocabulary_sizes),
+        }
+
     return {}
 
 

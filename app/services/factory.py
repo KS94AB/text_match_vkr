@@ -4,6 +4,7 @@ from app.services.exact_suffix import ExactSuffixAnalyzer
 from app.services.inverted_index import InvertedIndexAnalyzer
 from app.services.minhash_lsh import MinHashLSHAnalyzer
 from app.services.ngram_jaccard import NgramJaccardAnalyzer
+from app.services.tfidf_cosine import TfidfCosineAnalyzer
 
 
 METHOD_DETAILS = {
@@ -26,11 +27,19 @@ METHOD_DETAILS = {
 }
 
 
+METHOD_DETAILS["tfidf_cosine"] = {
+    "title": "TF-IDF + cosine similarity",
+    "description": "Basic vector method: TF-IDF vectors and cosine similarity between documents.",
+}
+
+_tfidf_analyzer = TfidfCosineAnalyzer()
+
 ANALYZERS = {
     "suffix_exact": ExactSuffixAnalyzer(),
     "minhash_lsh": MinHashLSHAnalyzer(),
     "inverted_index": InvertedIndexAnalyzer(),
     "ngram_jaccard": NgramJaccardAnalyzer(),
+    "tfidf_cosine": _tfidf_analyzer,
 }
 
 
